@@ -26,7 +26,8 @@
     @apply text-inherit no-underline;
   }
 
-  a:focus-visible {
+  a:focus-visible,
+  button:focus-visible {
     @apply outline outline-[3px] outline-offset-[5px] outline-coral;
   }
 
