@@ -1,10 +1,13 @@
 function QuantityStepper({ value, onChange, label }) {
+  // We pass an updater function instead of a plain number so that several
+  // clicks in the same render cycle all read the *latest* state rather than
+  // a stale `value` prop.
   function decrease() {
-    onChange(Math.max(0, value - 1))
+    onChange((current) => Math.max(0, current - 1))
   }
 
   function increase() {
-    onChange(value + 1)
+    onChange((current) => current + 1)
   }
 
   return (

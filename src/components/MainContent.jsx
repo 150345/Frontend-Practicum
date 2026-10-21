@@ -18,8 +18,13 @@ function MainContent() {
       ? categories.filter((category) => category.id !== 'all')
       : categories.filter((category) => category.id === activeFilter)
 
+  // `nextValue` may be a number or an updater function, so we resolve it
+  // against the latest state inside the setter.
   function updateQuantity(id, nextValue) {
-    setQuantities((current) => ({ ...current, [id]: nextValue }))
+    setQuantities((current) => ({
+      ...current,
+      [id]: typeof nextValue === 'function' ? nextValue(current[id]) : nextValue,
+    }))
   }
 
   const selectedCount = Object.values(quantities).reduce((sum, value) => sum + value, 0)
