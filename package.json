@@ -6,7 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "api": "npm --prefix server run dev",
+    "api:start": "npm --prefix server start",
+    "migrate": "npm --prefix server run migrate",
+    "seed": "npm --prefix server run seed",
+    "smoke": "node server/scripts/smoke-test.js",
+    "install:all": "npm install && npm --prefix server install"
   },
   "dependencies": {
     "react": "^19.1.0",

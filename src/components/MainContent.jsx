@@ -1,12 +1,23 @@
-import { useState } from 'react'
-import { categories, menuItems } from '../data/menu.js'
+import { useEffect, useState } from 'react'
+import { useMenu } from '../context/MenuContext.jsx'
 import MenuItem from './MenuItem.jsx'
+import TablePanel from './TablePanel.jsx'
 
 function MainContent() {
+  const { categories, items: menuItems, status, error, reload } = useMenu()
   const [activeFilter, setActiveFilter] = useState('all')
-  const [quantities, setQuantities] = useState(() =>
-    Object.fromEntries(menuItems.map((item) => [item.id, 0])),
-  )
+  const [quantities, setQuantities] = useState({})
+
+  // Keep the quantity map in step with the menu once it arrives.
+  useEffect(() => {
+    setQuantities((current) => {
+      const next = {}
+      for (const item of menuItems) {
+        next[item.id] = current[item.id] ?? 0
+      }
+      return next
+    })
+  }, [menuItems])
 
   const filteredItems =
     activeFilter === 'all'
@@ -56,6 +67,25 @@ function MainContent() {
             </p>
           </div>
 
+          {status === 'loading' ? (
+            <p className="mb-8 border border-line bg-white px-4 py-3 text-xs text-muted">
+              Loading today&apos;s menu…
+            </p>
+          ) : null}
+
+          {status === 'error' ? (
+            <div className="mb-8 border border-accent/40 bg-white px-4 py-3 text-xs text-ink">
+              <p className="mb-2">{error}</p>
+              <button
+                type="button"
+                onClick={reload}
+                className="border border-forest px-3 py-1.5 font-semibold text-forest transition hover:bg-forest hover:text-white"
+              >
+                Try again
+              </button>
+            </div>
+          ) : null}
+
           <div className="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filter menu by course">
             {categories.map((category) => {
               const isActive = activeFilter === category.id
@@ -82,6 +112,8 @@ function MainContent() {
               {selectedCount} {selectedCount === 1 ? 'portion' : 'portions'} selected for your table
             </p>
           ) : null}
+
+          <TablePanel quantities={quantities} items={menuItems} />
 
           <div className="grid grid-cols-1 gap-[35px] md:grid-cols-3 md:gap-6 lg:gap-[34px]">
             {visibleCategories.map((category) => {

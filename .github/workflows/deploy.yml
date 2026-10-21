@@ -1,0 +1,45 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy API and frontend to Railway
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy via Railway
+        env:
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+          RAILWAY_SERVICE_ID: ${{ secrets.RAILWAY_SERVICE_ID }}
+        run: |
+          if [ -z "$RAILWAY_API_TOKEN" ]; then
+            echo "::error::RAILWAY_API_TOKEN is not set — add it under Settings → Secrets."
+            exit 1
+          fi
+          npm i -g @railway/cli@latest
+          railway up --detach --service "$RAILWAY_SERVICE_ID"
+
+      - name: Verify the deployment
+        env:
+          API_URL: ${{ vars.API_URL }}
+        run: |
+          if [ -z "$API_URL" ]; then
+            echo "::warning::API_URL is not set, skipping the live check."
+            exit 0
+          fi
+          for i in $(seq 1 30); do
+            if curl -fsS "$API_URL/api/health" > /dev/null; then
+              echo "Deployment is live at $API_URL"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::The deployment did not become healthy in time."
+          exit 1

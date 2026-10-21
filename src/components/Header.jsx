@@ -1,3 +1,5 @@
+import AuthPanel from './AuthPanel.jsx'
+
 function Header() {
   return (
     <header className="flex min-h-[116px] flex-wrap items-center justify-between gap-4 bg-paper px-5 py-[18px] sm:min-h-[94px] sm:gap-7 sm:px-8 lg:px-12">
@@ -24,12 +26,15 @@ function Header() {
         </a>
       </nav>
 
-      <a
-        className="inline-flex min-h-[42px] items-center justify-center gap-[18px] border border-forest bg-forest px-3.5 py-2.5 text-[11px] font-semibold text-white transition hover:bg-sage hover:text-ink sm:min-h-12 sm:gap-8 sm:px-[23px] sm:py-3.5 sm:text-[13px]"
-        href="#reserve"
-      >
-        Book a table <span aria-hidden="true">↗</span>
-      </a>
+      <div className="flex items-center gap-3">
+        <AuthPanel />
+        <a
+          className="inline-flex min-h-[42px] items-center justify-center gap-[18px] border border-forest bg-forest px-3.5 py-2.5 text-[11px] font-semibold text-white transition hover:bg-sage hover:text-ink sm:min-h-12 sm:gap-8 sm:px-[23px] sm:py-3.5 sm:text-[13px]"
+          href="#reserve"
+        >
+          Book a table <span aria-hidden="true">↗</span>
+        </a>
+      </div>
     </header>
   )
 }
