@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 24px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    .motion-safe-arrive {
+      animation: none;
+    }
+  }
+
+  body {
+    @apply m-0 bg-paper font-body text-[15px] leading-relaxed text-ink;
+  }
+
+  a {
+    @apply text-inherit no-underline;
+  }
+
+  a:focus-visible {
+    @apply outline outline-[3px] outline-offset-[5px] outline-coral;
+  }
+
+  img {
+    @apply block w-full object-cover;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p {
+    @apply m-0;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display font-normal leading-[1.12];
+  }
+}
+
+@layer components {
+  .container-site {
+    @apply mx-auto w-[calc(100%-40px)] max-w-site sm:w-[calc(100%-64px)] lg:w-[calc(100%-96px)];
+  }
+}
