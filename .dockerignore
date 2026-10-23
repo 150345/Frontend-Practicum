@@ -1,0 +1,38 @@
+# Build context exclusions.
+#
+# `server/.env` holds local developer secrets (a localhost DATABASE_URL and a
+# session secret). The Dockerfile copies the whole `server/` folder, so without
+# this file those values would be baked into the published image. Runtime
+# configuration always comes from the platform's environment variables.
+
+# Dependencies and build output
+node_modules
+**/node_modules
+dist
+**/dist
+
+# Secrets and local environment
+.env
+**/.env
+*.local
+
+# Logs and editor cruft
+*.log
+logs
+.vscode
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Version control
+.git
+.gitignore
+
+# Docs and CI config are not needed in the image
+DEPLOYMENT.md
+README.md
+.github
