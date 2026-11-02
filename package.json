@@ -11,6 +11,7 @@
     "api:start": "npm --prefix server start",
     "migrate": "npm --prefix server run migrate",
     "seed": "npm --prefix server run seed",
+    "start": "cd server && node scripts/migrate.js && node scripts/seed.js && node src/index.js",
     "smoke": "node server/scripts/smoke-test.js",
     "install:all": "npm install && npm --prefix server install"
   },
