@@ -75,7 +75,34 @@ Generate a session secret with:
 node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
 ```
 
-## 3. The frontend
+### Stripe (test mode)
+
+Checkout uses Stripe Checkout. In test mode, use keys that start with
+`sk_test_` / `whsec_` and pay with card `4242 4242 4242 4242`.
+
+Environment variables:
+
+| Variable | Required | Notes |
+| --- | --- | --- |
+| `STRIPE_SECRET_KEY` | yes (for payments) | Secret API key from the Stripe dashboard |
+| `STRIPE_WEBHOOK_SECRET` | yes (for payments) | Webhook signing secret (`whsec_...`) |
+| `STRIPE_CURRENCY` | no | Defaults to `gbp` |
+| `APP_URL` | yes (for payments) | Public URL of the frontend, used for success/cancel redirects |
+
+Local webhook forwarding:
+
+```bash
+stripe listen --forward-to http://localhost:4000/api/webhooks/stripe
+```
+
+Production webhook endpoint:
+
+```
+https://your-api-domain/api/webhooks/stripe
+```
+
+Subscribe to `checkout.session.completed` and `checkout.session.expired`.
+
 
 ```bash
 npm install

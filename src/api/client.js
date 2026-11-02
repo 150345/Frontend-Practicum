@@ -53,6 +53,11 @@ export const api = {
   listSelections: () => request('/api/selections'),
   saveSelection: (name, items) => request('/api/selections', { method: 'POST', body: { name, items } }),
   deleteSelection: (id) => request(`/api/selections/${id}`, { method: 'DELETE' }),
+  checkout: (items) => request('/api/orders/checkout', { method: 'POST', body: { items } }),
+  getOrder: (id) => request(`/api/orders/${id}`),
 }
 
 export { API_BASE_URL }
+
+
+

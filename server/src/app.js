@@ -12,6 +12,8 @@ import { loadUser } from './middleware/auth.js'
 import authRoutes from './routes/auth.js'
 import menuRoutes from './routes/menu.js'
 import selectionRoutes from './routes/selections.js'
+import orderRoutes from './routes/orders.js'
+import webhookRoutes from './routes/webhooks.js'
 
 /**
  * The built frontend lives in `dist/` next to the server folder. Serving it
@@ -72,6 +74,7 @@ export function createApp() {
     }),
   )
 
+  app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }))
   app.use(express.json({ limit: '100kb' }))
 
   const PgStore = connectPgSimple(session)
@@ -106,6 +109,8 @@ export function createApp() {
   app.use('/api/auth', authRoutes)
   app.use('/api/menu', menuRoutes)
   app.use('/api/selections', selectionRoutes)
+  app.use('/api/webhooks', webhookRoutes)
+  app.use('/api/orders', orderRoutes)
 
   app.use('/api', (_req, res) => {
     res.status(404).json({ error: 'Not found' })
@@ -142,3 +147,5 @@ export function createApp() {
 
   return app
 }
+
+

@@ -31,6 +31,8 @@ const databaseUrl = required('DATABASE_URL')
 
 const clientOrigins = toList(process.env.CLIENT_ORIGIN)
 
+const appUrl = process.env.APP_URL ?? (clientOrigins[0] ?? 'http://localhost:5173')
+
 export const config = {
   isProduction,
   env: process.env.NODE_ENV ?? 'development',
@@ -39,6 +41,12 @@ export const config = {
   // Neon/Supabase style URLs need TLS; a local Docker Postgres does not.
   databaseSsl: process.env.DATABASE_SSL === 'false' ? false : { rejectUnauthorized: false },
   clientOrigins,
+  appUrl,
+  stripe: {
+    secretKey: process.env.STRIPE_SECRET_KEY ?? '',
+    webhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? '',
+    currency: process.env.STRIPE_CURRENCY ?? 'gbp',
+  },
   session: {
     secret: required('SESSION_SECRET'),
     // `none` is required when the API and the site live on different domains
@@ -53,3 +61,5 @@ export const config = {
     root: path.join(here, '..', '..'),
   },
 }
+
+

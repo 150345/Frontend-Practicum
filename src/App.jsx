@@ -2,10 +2,13 @@ import Header from './components/Header.jsx'
 import Hero from './components/Hero.jsx'
 import MainContent from './components/MainContent.jsx'
 import Footer from './components/Footer.jsx'
+import { SuccessPage } from './components/SuccessPage.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
 import { MenuProvider } from './context/MenuContext.jsx'
 
 function App() {
+  const isSuccess = window.location.pathname.replace(/\/$/, '') === '/success'
+
   return (
     <AuthProvider>
       <MenuProvider>
@@ -17,8 +20,14 @@ function App() {
         </a>
         <Header />
         <main id="main">
-          <Hero />
-          <MainContent />
+          {isSuccess ? (
+            <SuccessPage />
+          ) : (
+            <>
+              <Hero />
+              <MainContent />
+            </>
+          )}
         </main>
         <Footer />
       </MenuProvider>

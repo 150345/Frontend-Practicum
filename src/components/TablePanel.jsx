@@ -2,11 +2,6 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext.jsx'
 import { api } from '../api/client.js'
 
-/**
- * Lets a signed-in visitor save the table they are building, and lists the
- * tables they saved before. Requires an account — the API rejects anonymous
- * requests.
- */
 function TablePanel({ quantities, items }) {
   const { isAuthenticated } = useAuth()
   const [selections, setSelections] = useState([])
@@ -43,6 +38,30 @@ function TablePanel({ quantities, items }) {
     }
   }
 
+  async function placeOrder() {
+    setStatus('ordering')
+    setError(null)
+    setMessage(null)
+
+    const payload = items
+      .filter((item) => (quantities[item.id] ?? 0) > 0)
+      .map((item) => ({ databaseId: item.databaseId, quantity: quantities[item.id] }))
+
+    if (payload.length === 0) {
+      setError('Add at least one dish to your order first.')
+      setStatus('idle')
+      return
+    }
+
+    try {
+      const data = await api.checkout(payload)
+      window.location.href = data.url
+    } catch (caught) {
+      setError(caught.message ?? 'We could not start checkout.')
+      setStatus('idle')
+    }
+  }
+
   async function removeSelection(id) {
     try {
       await api.deleteSelection(id)
@@ -52,7 +71,6 @@ function TablePanel({ quantities, items }) {
     }
   }
 
-  // Load the saved tables as soon as we know who the visitor is.
   useEffect(() => {
     if (isAuthenticated) {
       loadSelections()
@@ -76,14 +94,24 @@ function TablePanel({ quantities, items }) {
           <h3 className="font-display text-[20px]">Your table</h3>
           <p className="text-[11px] text-muted">Save what you picked and find it again later.</p>
         </div>
-        <button
-          type="button"
-          onClick={saveTable}
-          disabled={status === 'saving'}
-          className="border border-forest bg-forest px-4 py-2 text-[11px] font-semibold text-white transition hover:bg-sage hover:text-ink disabled:opacity-60"
-        >
-          {status === 'saving' ? 'Saving…' : 'Save this table'}
-        </button>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={saveTable}
+            disabled={status === 'saving'}
+            className="border border-forest bg-forest px-4 py-2 text-[11px] font-semibold text-white transition hover:bg-sage hover:text-ink disabled:opacity-60"
+          >
+            {status === 'saving' ? 'Saving...' : 'Save this table'}
+          </button>
+          <button
+            type="button"
+            onClick={placeOrder}
+            disabled={status === 'ordering'}
+            className="border border-accent bg-accent px-4 py-2 text-[11px] font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
+          >
+            {status === 'ordering' ? 'Redirecting...' : 'Order now'}
+          </button>
+        </div>
       </div>
 
       {message ? <p className="mt-3 text-[11px] text-forest">{message}</p> : null}
@@ -102,7 +130,7 @@ function TablePanel({ quantities, items }) {
                 <p className="text-[11px] text-muted">
                   {selection.items.length > 0
                     ? selection.items
-                        .map((item) => `${item.quantity}× ${item.name}`)
+                        .map((item) => `${item.quantity}x ${item.name}`)
                         .join(', ')
                     : 'No dishes yet'}
                 </p>
