@@ -21,7 +21,7 @@ import webhookRoutes from './routes/webhooks.js'
  * is what lets the site work on a plain HTTPS deployment without any CORS
  * cookie gymnastics.
  */
-const CLIENT_DIST = path.join(config.paths.root, 'dist')
+const CLIENT_DIST = path.join(config.paths.root, 'client', 'dist')
 const hasClientBuild = fs.existsSync(path.join(CLIENT_DIST, 'index.html'))
 
 export function createApp() {

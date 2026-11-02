@@ -3,13 +3,6 @@ import { api } from '../api/client.js'
 
 const MenuContext = createContext(null)
 
-/**
- * Loads the menu from the API (which reads it from PostgreSQL).
- *
- * The shape returned here is identical to the array that used to live in
- * `src/data/menu.js`, so the components only had to change where they get
- * their data from.
- */
 export function MenuProvider({ children }) {
   const [categories, setCategories] = useState([])
   const [items, setItems] = useState([])

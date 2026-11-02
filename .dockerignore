@@ -10,6 +10,7 @@ node_modules
 **/node_modules
 dist
 **/dist
+client/dist
 
 # Secrets and local environment
 .env

@@ -116,9 +116,7 @@ function TablePanel({ quantities, items }) {
 
       {message ? <p className="mt-3 text-[11px] text-forest">{message}</p> : null}
       {error ? (
-        <p role="alert" className="mt-3 text-[11px] text-accent">
-          {error}
-        </p>
+        <p role="alert" className="mt-3 text-[11px] text-accent">{error}</p>
       ) : null}
 
       {selections.length > 0 ? (

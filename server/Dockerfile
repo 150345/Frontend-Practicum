@@ -9,11 +9,11 @@ COPY server/package.json server/package-lock.json* ./server/
 RUN cd server && npm ci --omit=dev
 
 # Install the frontend dependencies and build the static site.
-COPY package.json package-lock.json* ./
-RUN npm ci
-COPY index.html vite.config.js tailwind.config.js postcss.config.js ./
-COPY src/ ./src/
-RUN npm run build
+COPY client/package.json client/package-lock.json* ./client/
+RUN cd client && npm ci
+COPY client/index.html client/vite.config.js client/tailwind.config.js client/postcss.config.js ./client/
+COPY client/src/ ./client/src/
+RUN cd client && npm run build
 
 # Copy the server source.
 COPY server/ ./server/

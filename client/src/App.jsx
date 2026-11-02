@@ -7,7 +7,7 @@ import { AuthProvider } from './context/AuthContext.jsx'
 import { MenuProvider } from './context/MenuContext.jsx'
 
 function App() {
-  const isSuccess = window.location.pathname.replace(/\/$/, '') === '/success'
+  const isSuccess = window.location.pathname.replace(/\\/$/, '') === '/success'
 
   return (
     <AuthProvider>

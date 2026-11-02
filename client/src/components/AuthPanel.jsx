@@ -3,10 +3,6 @@ import { useAuth } from '../context/AuthContext.jsx'
 
 const EMPTY_FORM = { name: '', email: '', password: '' }
 
-/**
- * Sign in / create account form plus the signed-in state.
- * Rendered inside the header so the visitor always sees their session.
- */
 function AuthPanel() {
   const { user, isAuthenticated, login, signup, logout } = useAuth()
   const [mode, setMode] = useState('login')
@@ -26,49 +22,6 @@ function AuthPanel() {
     setError(null)
     setBusy(true)
 
-    try {
-      if (isSignup) {
-        await signup({ name: form.name.trim(), email: form.email.trim(), password: form.password })
-      } else {
-        await login({ email: form.email.trim(), password: form.password })
-      }
-      setForm(EMPTY_FORM)
-      setOpen(false)
-    } catch (caught) {
-      setError(caught.message ?? 'Something went wrong. Please try again.')
-    } finally {
-      setBusy(false)
-    }
-  }
-
-  if (isAuthenticated) {
-    return (
-      <div className="flex items-center gap-3">
-        <span className="hidden text-xs text-muted sm:inline">
-          Hello, <span className="font-semibold text-ink">{user.name}</span>
-        </span>
-        <button
-          type="button"
-          onClick={() => logout()}
-          className="inline-flex min-h-10 items-center justify-center border border-forest px-3.5 py-2 text-[11px] font-semibold text-forest transition hover:bg-forest hover:text-white"
-        >
-          Sign out
-        </button>
-      </div>
-    )
-  }
-
-  return (
-    <div className="relative">
-      <button
-        type="button"
-        onClick={() => setOpen((current) => !current)}
-        aria-expanded={open}
-        className="inline-flex min-h-10 items-center justify-center border border-forest px-3.5 py-2 text-[11px] font-semibold text-forest transition hover:bg-forest hover:text-white"
-      >
-        Sign in
-      </button>
-
       {open ? (
         <form
           onSubmit={handleSubmit}
@@ -79,9 +32,7 @@ function AuthPanel() {
               type="button"
               onClick={() => setMode('login')}
               aria-pressed={!isSignup}
-              className={`flex-1 px-3 py-1.5 text-[11px] font-semibold transition ${
-                !isSignup ? 'bg-forest text-white' : 'bg-white text-ink'
-              }`}
+              className={`flex-1 px-3 py-1.5 text-[11px] font-semibold transition ${!isSignup ? 'bg-forest text-white' : 'bg-white text-ink'}`}
             >
               Sign in
             </button>
@@ -89,9 +40,7 @@ function AuthPanel() {
               type="button"
               onClick={() => setMode('signup')}
               aria-pressed={isSignup}
-              className={`flex-1 px-3 py-1.5 text-[11px] font-semibold transition ${
-                isSignup ? 'bg-forest text-white' : 'bg-white text-ink'
-              }`}
+              className={`flex-1 px-3 py-1.5 text-[11px] font-semibold transition ${isSignup ? 'bg-forest text-white' : 'bg-white text-ink'}`}
             >
               Create account
             </button>
@@ -101,9 +50,7 @@ function AuthPanel() {
             {isSignup ? 'Join Juniper' : 'Welcome back'}
           </h2>
           <p className="mb-4 text-[11px] text-muted">
-            {isSignup
-              ? 'Save your table and come back to it later.'
-              : 'Sign in to see the table you saved.'}
+            {isSignup ? 'Save your table and come back to it later.' : 'Sign in to see the table you saved.'}
           </p>
 
           {isSignup ? (
@@ -149,9 +96,7 @@ function AuthPanel() {
           </label>
 
           {error ? (
-            <p role="alert" className="mb-3 text-[11px] text-accent">
-              {error}
-            </p>
+            <p role="alert" className="mb-3 text-[11px] text-accent">{error}</p>
           ) : null}
 
           <button
@@ -168,10 +113,7 @@ function AuthPanel() {
                 Already have an account?{' '}
                 <button
                   type="button"
-                  onClick={() => {
-                    setMode('login')
-                    setError(null)
-                  }}
+                  onClick={() => { setMode('login'); setError(null) }}
                   className="underline underline-offset-2 hover:text-ink"
                 >
                   Sign in
@@ -182,10 +124,7 @@ function AuthPanel() {
                 New to Juniper?{' '}
                 <button
                   type="button"
-                  onClick={() => {
-                    setMode('signup')
-                    setError(null)
-                  }}
+                  onClick={() => { setMode('signup'); setError(null) }}
                   className="underline underline-offset-2 hover:text-ink"
                 >
                   Create an account
@@ -200,3 +139,45 @@ function AuthPanel() {
 }
 
 export default AuthPanel
+    try {
+      if (isSignup) {
+        await signup({ name: form.name.trim(), email: form.email.trim(), password: form.password })
+      } else {
+        await login({ email: form.email.trim(), password: form.password })
+      }
+      setForm(EMPTY_FORM)
+      setOpen(false)
+    } catch (caught) {
+      setError(caught.message ?? 'Something went wrong. Please try again.')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  if (isAuthenticated) {
+    return (
+      <div className="flex items-center gap-3">
+        <span className="hidden text-xs text-muted sm:inline">
+          Hello, <span className="font-semibold text-ink">{user.name}</span>
+        </span>
+        <button
+          type="button"
+          onClick={() => logout()}
+          className="inline-flex min-h-10 items-center justify-center border border-forest px-3.5 py-2 text-[11px] font-semibold text-forest transition hover:bg-forest hover:text-white"
+        >
+          Sign out
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((current) => !current)}
+        aria-expanded={open}
+        className="inline-flex min-h-10 items-center justify-center border border-forest px-3.5 py-2 text-[11px] font-semibold text-forest transition hover:bg-forest hover:text-white"
+      >
+        Sign in
+      </button>

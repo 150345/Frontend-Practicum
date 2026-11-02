@@ -56,7 +56,7 @@ export function SuccessPage() {
   if (!order) {
     return (
       <section className="success-page">
-        <h1>Checking your order…</h1>
+        <h1>Checking your order</h1>
         <p>One moment while we confirm your payment.</p>
       </section>
     )
@@ -69,23 +69,23 @@ export function SuccessPage() {
       <h1>{isPaid ? 'Payment confirmed' : 'Payment pending'}</h1>
       <p>
         {isPaid
-          ? 'Thank you — your order has been received and is being prepared.'
+          ? 'Thank you. Your order has been received and is being prepared.'
           : 'We have not yet received confirmation from Stripe. This can take a few seconds.'}
       </p>
       <div className="success-page__summary">
         <p>
-          <strong>Order #{order.id}</strong> — {order.status}
+          <strong>Order #{order.id}</strong> {order.status}
         </p>
         <p>Total: {order.currency.toUpperCase()} {order.totalAmount.toFixed(2)}</p>
         <ul>
           {order.items.map((item) => (
             <li key={item.id}>
-              {item.name} × {item.quantity} — {order.currency.toUpperCase()} {(item.unitPrice * item.quantity).toFixed(2)}
+              {item.name} {item.quantity} {order.currency.toUpperCase()} {(item.unitPrice * item.quantity).toFixed(2)}
             </li>
           ))}
         </ul>
       </div>
-      {!isPaid && pollCount < MAX_POLLS ? <p>Waiting for confirmation…</p> : null}
+      {!isPaid && pollCount < MAX_POLLS ? <p>Waiting for confirmation</p> : null}
       <a href="/">Back to the menu</a>
     </section>
   )

@@ -3,11 +3,6 @@ import { api } from '../api/client.js'
 
 const AuthContext = createContext(null)
 
-/**
- * Holds the signed-in user and exposes the auth actions.
- * The session lives in an httpOnly cookie, so we ask the server who we are on
- * mount and whenever the tab regains focus.
- */
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [status, setStatus] = useState('loading')

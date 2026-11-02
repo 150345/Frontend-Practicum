@@ -9,7 +9,7 @@
  * the local API — that keeps the session cookie same-origin in development.
  */
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '')
+const API_BASE_URL = (import.meta.env.VITE_API_URL ?? '').replace(/\/+$/, '')
 
 export class ApiError extends Error {
   constructor(message, status) {
@@ -58,6 +58,3 @@ export const api = {
 }
 
 export { API_BASE_URL }
-
-
-
